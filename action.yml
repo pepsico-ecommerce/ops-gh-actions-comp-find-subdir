@@ -43,6 +43,6 @@ runs:
       id: unique_directory_array
       uses:  pepsico-ecommerce/github_actions_helpers/jq-action@main
       with:
-        input: ${{ steps.get_changed_files.outputs.files_changed_files }} 
+        input: ${{ steps.get_changed_files.outputs.files_changed_files }}
         script: '. | map( split("/") | del(.[-1]) | join("/") | select(. | match("^((?!${{ inputs.exclude_subdirectory }}).)*$"))) | unique'
         compact: true
