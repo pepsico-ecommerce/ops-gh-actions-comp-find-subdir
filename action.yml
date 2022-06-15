@@ -8,6 +8,10 @@ inputs:
     default: "\n"
     description: 'Exclude statement on any directories'
     required: false
+  git_branch:
+    default: ""
+    description: 'custom branch for checkout'
+    required: false
 outputs:
   files_changed_boolean:
     description: 'Boolean if files matched filter_directory'
@@ -21,6 +25,8 @@ runs:
   steps:
     - name: Checkout
       uses: actions/checkout@v3
+      with:
+        ref: ${{ inputs.git_branch }}
     - uses:  pepsico-ecommerce/github_actions_helpers/paths-filter@main
       name: Find all changed files
       id: get_changed_files
@@ -33,6 +39,6 @@ runs:
       id: unique_directory_array
       uses:  pepsico-ecommerce/github_actions_helpers/jq-action@main
       with:
-        input: ${{ steps.get_changed_files.outputs.files_changed_files }} 
+        input: ${{ steps.get_changed_files.outputs.files_changed_files }}
         script: '. | map( split("/") | del(.[-1]) | join("/") | select(. | match("^((?!${{ inputs.exclude_subdirectory }}).)*$"))) | unique'
         compact: true
