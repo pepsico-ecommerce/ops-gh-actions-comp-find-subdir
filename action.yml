@@ -24,13 +24,9 @@ runs:
   using: "composite"
   steps:
     - name: Checkout
-      if: inputs.git_branch != ''
       uses: actions/checkout@v3
       with:
         ref: ${{ inputs.git_branch }}
-    - name: Checkout
-      if: inputs.git_branch == ''
-      uses: actions/checkout@v3
     - uses:  pepsico-ecommerce/github_actions_helpers/paths-filter@main
       name: Find all changed files
       id: get_changed_files
