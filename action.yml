@@ -12,6 +12,10 @@ inputs:
     default: ""
     description: 'custom branch for checkout'
     required: false
+  git_base:
+    default: ""
+    description: 'Branch, tag, or commit SHA against which the changes will be detected.'
+    required: false
 outputs:
   files_changed_boolean:
     description: 'Boolean if files matched filter_directory'
@@ -32,6 +36,7 @@ runs:
       id: get_changed_files
       with:
         list-files: 'json'
+        base: ${{ inputs.git_base }}
         filters: |
           files_changed:
           - "${{ inputs.filter_directory }}/**"
